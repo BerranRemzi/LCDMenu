@@ -17,6 +17,17 @@
 /* User includes */
 #include "LCDMenu.h"
 
+typedef enum Button_t {
+    BUTTON_RIGHT,
+    BUTTON_UP,
+    BUTTON_DOWN,
+    BUTTON_LEFT,
+    BUTTON_SELECT,
+    BUTTON_NONE
+}Button_t;
+
+Button_t Key_Read(void);
+
 void UpdateScreen(const void* pFunction());
 
 void menu_mmu2(void);
@@ -35,6 +46,7 @@ void (*pPrintScreen[8])();
 
 int menuDepth = 0;
 int selection = -1;
+int cursor = 0;
 bool menuChange = false;
 bool run = true;
 
@@ -45,11 +57,19 @@ int main() {
         UpdateScreen(pPrintScreen[menuDepth]);
         selection = -1;
         UpdateScreen(pPrintScreen[menuDepth]);
-        printf("Select : ");
 
-        int value = scanf("%d", &selection);
-        printf("%d\n", value);
-        delay_ms(500);
+        printf("cursor = %d", cursor);
+        switch (Key_Read()) {
+        case BUTTON_UP:
+            cursor--;
+            break;
+        case BUTTON_DOWN:
+            cursor++;
+            break;
+        default: break;
+        }
+
+
     } while (run == true);
     return 0;
 }
@@ -119,4 +139,37 @@ void ActionItem2(void) {
 
 void Exit(void) {
     run = false;
+}
+
+Button_t Key_Read(void) {
+    Button_t returnValue = BUTTON_NONE;
+    int temp = getch();
+    if (temp == 224) { // if the first value is esc
+#ifndef _WIN32
+        getch(); // skip the [
+#endif
+        switch (getch()) { // the real value
+        case 72:
+            // code for arrow up
+            returnValue = BUTTON_UP;
+            break;
+        case 80:
+            // code for arrow down
+            returnValue = BUTTON_DOWN;
+            break;
+        case 77:
+            // code for arrow right
+            returnValue = BUTTON_RIGHT;
+            break;
+        case 75:
+            // code for arrow left
+            returnValue = BUTTON_LEFT;
+            break;
+        default: break;
+        }
+    }else if (temp == 13) {
+        // code for select
+        returnValue = BUTTON_SELECT;
+    }
+    return returnValue;
 }

@@ -20,7 +20,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Menu.h">
+    <ClInclude Include="..\..\LCDMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
