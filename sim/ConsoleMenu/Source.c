@@ -1,14 +1,20 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#ifdef _WIN32
-#include <Windows.h>
-#else
-#include <unistd.h>
-#endif
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
+
+#ifdef _WIN32
+#include <Windows.h>
+#define delay_ms(DELAY) Sleep(DELAY)
+#define clear_screen()  system("cls")
+#else
+#include <unistd.h>
+#define delay_ms(DELAY) sleep(DELAY)
+#define clear_screen()  system("clear")
+#endif
+
+/* User includes */
 #include "LCDMenu.h"
 
 void UpdateScreen(const void* pFunction());
@@ -43,13 +49,13 @@ int main() {
 
         int value = scanf("%d", &selection);
         printf("%d\n", value);
-        Sleep(500);
+        delay_ms(500);
     } while (run == true);
     return 0;
 }
 
 void UpdateScreen(const void* pFunction()) {
-    system("cls");
+    clear_screen();
     if (pFunction != NULL) {
         pFunction();
     }
@@ -104,11 +110,11 @@ void SubMenu3(void) {
 }
 void ActionItem1(void) {
     printf("ActionItem1");
-    Sleep(1000);
+    delay_ms(1000);
 }
 void ActionItem2(void) {
     printf("ActionItem2");
-    Sleep(1000);
+    delay_ms(1000);
 }
 
 void Exit(void) {
