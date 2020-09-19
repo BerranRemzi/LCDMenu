@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "Menu.h"
+#include "LCDMenu.h"
 
 void UpdateScreen(const void* pFunction());
 
