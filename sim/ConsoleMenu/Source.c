@@ -28,15 +28,14 @@ typedef enum Button_t {
 
 Button_t Key_Read(void);
 
-void UpdateScreen(const void* pFunction());
+void UpdateScreen(void* pFunction());
 
+void menu_static(void);
 void menu_mmu2(void);
 void SubMenu1(void);
 void SubMenu1_1(void);
 void SubMenu1_2(void);
 void SubMenu2(void);
-void SubMenu2_1(void);
-void SubMenu2_2(void);
 void SubMenu3(void);
 void ActionItem1(void);
 void ActionItem2(void);
@@ -44,27 +43,29 @@ void Exit(void);
 
 void (*pPrintScreen[8])();
 
-int menuDepth = 0;
-int selection = -1;
-int cursor = 0;
-bool menuChange = false;
 bool run = true;
 
 int main() {
-    pPrintScreen[menuDepth] = &menu_mmu2;
-    UpdateScreen(pPrintScreen[menuDepth]);
+    pPrintScreen[menuDepth] = &menu_static;
     do{ 
         UpdateScreen(pPrintScreen[menuDepth]);
-        selection = -1;
         UpdateScreen(pPrintScreen[menuDepth]);
 
-        printf("cursor = %d", cursor);
+        SETCURSOR(0, LCD_HEIGHT + 5);
+        printf("encoderTopLine = %d\n", encoderTopLine);
+        printf("encoderLine = %d\n", encoderLine);
+        printf("screen_items = %d\n", screen_items);
+        printf("_thisItemNr = %d\n", _thisItemNr);
+
         switch (Key_Read()) {
         case BUTTON_UP:
-            cursor--;
+            LCDMenu_Up();
             break;
         case BUTTON_DOWN:
-            cursor++;
+            LCDMenu_Down();
+            break;
+        case BUTTON_SELECT:
+            LCDMenu_Select();
             break;
         default: break;
         }
@@ -74,7 +75,7 @@ int main() {
     return 0;
 }
 
-void UpdateScreen(const void* pFunction()) {
+void UpdateScreen(void* pFunction()) {
     clear_screen();
     if (pFunction != NULL) {
         pFunction();
@@ -89,6 +90,17 @@ void menu_mmu2(void) {
     SUBMENU("SubMenu3", SubMenu3);
     ACTION_ITEM("ActionItem1", ActionItem1);
     ACTION_ITEM("ActionItem2", ActionItem2);
+    END_MENU();
+}
+void menu_static(void) {
+    START_MENU();
+    ACTION_ITEM("Exit...", Exit);
+    STATIC_ITEM("Static1");
+    SUBMENU("SubMenu1", SubMenu1);
+    STATIC_ITEM("Static2");
+    STATIC_ITEM("Static3");
+    STATIC_ITEM("Static4");
+    STATIC_ITEM("Static5");
     END_MENU();
 }
 
