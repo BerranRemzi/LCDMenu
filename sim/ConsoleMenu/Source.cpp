@@ -16,7 +16,15 @@
 
 /* User includes */
 #include "LCDMenu.h"
+#include "example/DFR_LCD_Keypad_Menu/DFR_LCD_Keypad_Menu.ino"
 
+int main(void) {
+    setup();
+    while (1) {
+        loop();
+    }
+}
+#if 0
 typedef enum Button_t {
     BUTTON_RIGHT,
     BUTTON_UP,
@@ -64,6 +72,12 @@ int main() {
         case BUTTON_DOWN:
             LCDMenu_Down();
             break;
+        case BUTTON_RIGHT:
+            LCDMenu_Increment(1);
+            break;
+        case BUTTON_LEFT:
+            LCDMenu_Decrement(1);
+            break;
         case BUTTON_SELECT:
             LCDMenu_Select();
             break;
@@ -81,7 +95,7 @@ void UpdateScreen(void* pFunction()) {
         pFunction();
     }
 }
-
+int value = 0;
 void menu_mmu2(void) {
     START_MENU();
     ACTION_ITEM("Exit...", Exit);
@@ -95,8 +109,9 @@ void menu_mmu2(void) {
 void menu_static(void) {
     START_MENU();
     ACTION_ITEM("Exit...", Exit);
-    STATIC_ITEM("Static1");
+    EDIT_ITEM_FAST("value", value);
     SUBMENU("SubMenu1", SubMenu1);
+    STATIC_ITEM("Static1");
     STATIC_ITEM("Static2");
     STATIC_ITEM("Static3");
     STATIC_ITEM("Static4");
@@ -185,3 +200,4 @@ Button_t Key_Read(void) {
     }
     return returnValue;
 }
+#endif
