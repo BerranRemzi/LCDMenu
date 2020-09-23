@@ -87,7 +87,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\example\DFR_LCD_Keypad_Menu;$(SolutionDir)..</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,10 +142,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\LCDMenu.c" />
+    <ClCompile Include="..\..\LCDMenu.cpp" />
+    <ClCompile Include="AnalogButton.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\example\DFR_LCD_Keypad_Menu\AnalogButton.h" />
     <ClInclude Include="..\..\LCDMenu.h" />
     <ClInclude Include="..\..\LCDMenu_cfg.h" />
     <ClInclude Include="LiquidCrystal.h" />

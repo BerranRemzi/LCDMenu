@@ -13,7 +13,7 @@ extern int8_t menuDepth;
 extern const uint8_t arrowChar[];
 extern const uint8_t returnChar[];
 
-char charBuffer[LCD_WIDTH+2];
+extern char charBuffer[];
 
 #define IS_CURSOR_ACTIVE()          ((encoderTopLine + encoderLine) == _thisItemNr)
 
