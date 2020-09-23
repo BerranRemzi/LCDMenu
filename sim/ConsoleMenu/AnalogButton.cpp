@@ -40,13 +40,15 @@ void AnalogButton_LoadSample(uint16_t _new_sample)
 
 uint8_t AnalogButton_ReadCommand(void)
 {
+    static int key[2];
     Button_t returnValue = BUTTON_NONE;
-    int temp = _getch();
-    if (temp == 224) { // if the first value is esc
+    key[0] = key[1];
+    key[1] = _getch();
+    if (key[0] == 224) { // if the first value is esc
 #ifndef _WIN32
         _getch(); // skip the [
 #endif
-        switch (_getch()) { // the real value
+        switch (key[1]) { // the real value
         case 72:
             // code for arrow up
             returnValue = BUTTON_UP;
@@ -66,7 +68,7 @@ uint8_t AnalogButton_ReadCommand(void)
         default: break;
         }
     }
-    else if (temp == 13) {
+    else if (key[1] == 13) {
         // code for select
         returnValue = BUTTON_SELECT;
     }

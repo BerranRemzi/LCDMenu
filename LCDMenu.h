@@ -22,7 +22,7 @@ extern char charBuffer[];
 #define SUBMENU(LABEL,FUNCTION)     if (_menuLineNr == _thisItemNr) { DRAW(_lcdLineNr,LABEL); SETCURSOR(LCD_WIDTH-1, _lcdLineNr); WRITE_RETURN(); if(IS_CURSOR_ACTIVE() && selectPressed){ pPrintScreen[++menuDepth] = FUNCTION; }} NEXT_ITEM();  
 #define ACTION_ITEM(LABEL,FUNCTION) if (_menuLineNr == _thisItemNr) { DRAW(_lcdLineNr,LABEL); if(IS_CURSOR_ACTIVE() && selectPressed){ FUNCTION(); }} NEXT_ITEM();  
 #define EDIT_ITEM(LABEL, VALUE)     
-#define EDIT_ITEM_FAST(LABEL, VALUE) if (_menuLineNr == _thisItemNr) { PRINT_RIGHT(VALUE); DRAW(_lcdLineNr,LABEL); if(IS_CURSOR_ACTIVE()){ VALUE+=LCDMenu_ValueChange();} LCDMenu_ValueReset();} NEXT_ITEM()
+#define EDIT_ITEM_FAST(LABEL, VALUE) if (_menuLineNr == _thisItemNr) {  DRAW(_lcdLineNr,LABEL); if(IS_CURSOR_ACTIVE()){ VALUE+=LCDMenu_ValueChange();} PRINT_RIGHT(VALUE); LCDMenu_ValueReset();} NEXT_ITEM()
 
 #define UNUSED(x) ((void)(x))
 #define SET_CURSOR(LINE)   DRAW(LINE,">"); 
