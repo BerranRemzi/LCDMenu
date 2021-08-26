@@ -2,8 +2,8 @@
 #define LCDMENU_CFG_H
 
 /* User defined macros */
-#define LCD_HEIGHT 2
-#define LCD_WIDTH 16
+#define LCD_HEIGHT 4
+#define LCD_WIDTH 20
 
 #ifdef ARDUINO
 #define SETCURSOR(X, Y)     lcd.setCursor(X, Y)
