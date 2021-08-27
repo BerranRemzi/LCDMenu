@@ -5,10 +5,24 @@
 
 #include "LCDMenu_cfg.h"
 
+typedef void (*screenFunc_t)();
+typedef void (*menuAction_t)();
+
+typedef struct
+{
+        screenFunc_t menu_function; // The screen's function
+        uint32_t encoder_position;  // The position of the encoder
+        int8_t top_line, items;     // The amount of scroll, and the number of items
+#if SCREENS_CAN_TIME_OUT
+        bool sticky; // The screen is sticky
+#endif
+} menuPosition;
+
 // Menu Navigation
 extern int8_t encoderTopLine, encoderLine, screen_items, _thisItemNr;
 extern bool selectPressed;
-extern int8_t menuDepth;
+extern menuPosition screen_history[];
+extern int8_t screen_history_depth;
 
 extern const uint8_t arrowChar[];
 extern const uint8_t returnChar[];
@@ -20,13 +34,13 @@ extern char charBuffer[];
 #define BACK_ITEM(LABEL)                                         \
         if (_menuLineNr == _thisItemNr)                          \
         {                                                        \
-                if (menuDepth > 0)                               \
+                if (screen_history_depth > 0)                    \
                 {                                                \
                         char c = IS_CURSOR_ACTIVE() ? '>' : ' '; \
                         sprintf(buffer, "%c%-18s ", c, LABEL);   \
                         lcd.print(buffer);                       \
                         if (IS_CURSOR_ACTIVE() && selectPressed) \
-                                menuDepth--;                     \
+                                screen_history_depth--;          \
                 }                                                \
         }                                                        \
         NEXT_ITEM();
@@ -39,19 +53,20 @@ extern char charBuffer[];
                 lcd.print(buffer);                       \
         }                                                \
         NEXT_ITEM();
-#define SUBMENU(LABEL, FUNCTION)                              \
-        if (_menuLineNr == _thisItemNr)                       \
-        {                                                     \
-                SETCURSOR(0, _lcdLineNr);                     \
-                char c = IS_CURSOR_ACTIVE() ? '>' : ' ';      \
-                sprintf(buffer, "%c%-18s>", c, LABEL);        \
-                lcd.print(buffer);                            \
-                                                              \
-                if (IS_CURSOR_ACTIVE() && selectPressed)      \
-                {                                             \
-                        pPrintScreen[++menuDepth] = FUNCTION; \
-                }                                             \
-        }                                                     \
+#define SUBMENU(LABEL, FUNCTION)                                                       \
+        if (_menuLineNr == _thisItemNr)                                                \
+        {                                                                              \
+                SETCURSOR(0, _lcdLineNr);                                              \
+                char c = IS_CURSOR_ACTIVE() ? '>' : ' ';                               \
+                sprintf(buffer, "%c%-18s>", c, LABEL);                                 \
+                lcd.print(buffer);                                                     \
+                                                                                       \
+                if (IS_CURSOR_ACTIVE() && selectPressed)                               \
+                {                                                                      \
+                        screen_history_depth++;                                        \
+                        screen_history[screen_history_depth].menu_function = FUNCTION; \
+                }                                                                      \
+        }                                                                              \
         NEXT_ITEM();
 #define ACTION_ITEM(LABEL, FUNCTION)                     \
         if (_menuLineNr == _thisItemNr)                  \
@@ -122,6 +137,7 @@ extern "C"
         void LCDMenu_Decrement(uint8_t _step);
         int32_t LCDMenu_ValueChange(void);
         void LCDMenu_ValueReset(void);
+        void LCDMenu_Task(void);
 
 #ifdef __cplusplus // Provide C++ Compatibility
 }
