@@ -7,8 +7,8 @@
 
 #ifdef ARDUINO
 #define SETCURSOR(X, Y)     lcd.setCursor(X, Y)
-#define PRINT(PLABEL)       lcd.print(PLABEL)
- 
+#define PRINT(PLABEL)       sprintf(buffer, " %-19s", PLABEL); lcd.print(buffer)
+#define PRINT_NEW(CURSOR, PLABEL, SUB)   sprintf(buffer, "%c%-18s%c", CURSOR, PLABEL, SUB); lcd.print(buffer)
 #define WRITE_ARROW()       lcd.write(arrowChar[0])
 #define WRITE_RETURN()      lcd.write(returnChar[0])
 #else
@@ -21,7 +21,8 @@
 #define TEXTIFY(TEXT)       #TEXT
 #define VALUE_FORMAT(WIDTH) TEXTIFY(%16d)
 #define PRINT_RIGHT(VALUE)  sprintf( charBuffer, VALUE_FORMAT(LCD_WIDTH), VALUE); PRINT(charBuffer)   
-#define DRAW(LINE, PLABEL)  SETCURSOR(1,LINE); PRINT(PLABEL)
+#define DRAW(LINE, PLABEL)  SETCURSOR(0,LINE); PRINT(PLABEL)
+#define DRAW_NEW(LINE, PLABEL, CURSOR, SUB)  SETCURSOR(0,LINE); PRINT_NEW(CURSOR, PLABEL, SUB)
 
 
 
