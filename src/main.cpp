@@ -22,11 +22,11 @@ enum Button_t {
   BUTTON_UP,
   BUTTON_DOWN,
   BUTTON_LEFT,
-  BUTTON_SELECT,
   BUTTON_NONE
 };
+
 int8_t menuDepth = 0;
-uint16_t buttonADC[] = { 0, 99, 255, 408, 639, 1023 };
+uint16_t buttonADC[] = { 0, 99, 255, 408, 1023 };
 AnalogButtonConfig_t buttons = {buttonADC, 5};
 void (*pPrintScreen[8])(void);
 
@@ -108,12 +108,10 @@ void ReadInputs(void) {
         break;
         case BUTTON_RIGHT:
         LCDMenu_Increment(1);
+        LCDMenu_Select();
         break;
       case BUTTON_LEFT:
         LCDMenu_Decrement(1);
-        break;
-      case BUTTON_SELECT:
-        LCDMenu_Select();
         break;
       default: break;
     }
