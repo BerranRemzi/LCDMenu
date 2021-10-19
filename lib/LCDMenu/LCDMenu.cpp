@@ -17,8 +17,8 @@ bool selectPressed = false;
 
 int32_t valueChange = 0;
 
-const uint8_t arrowChar[8] = {0x00, 0x04, 0x06, 0x1f, 0x06, 0x04, 0x00}; //Send 0,4,6,1F,6,4,0 for the arrow
-const uint8_t returnChar[8] = {0x01, 0x01, 0x01, 0x05, 0x09, 0x1F, 0x08, 0x04};
+uint8_t arrowChar[8] = {0x00, 0x04, 0x06, 0x1f, 0x06, 0x04, 0x00}; //Send 0,4,6,1F,6,4,0 for the arrow
+uint8_t returnChar[8] = {0x01, 0x01, 0x01, 0x05, 0x09, 0x1F, 0x08, 0x04};
 
 char charBuffer[LCD_WIDTH + 2];
 
@@ -40,6 +40,7 @@ void LCDMenu_Down(void)
 
 void LCDMenu_Up(void)
 {
+    
     if (encoderLine > 0)
     {
         encoderLine--;
