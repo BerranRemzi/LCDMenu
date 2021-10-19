@@ -34,7 +34,7 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   AnalogButton_Init(&buttons);
 
   lcd.begin(LCD_WIDTH, LCD_HEIGHT);              // start the library
@@ -93,7 +93,6 @@ void SubMenu_1(void) {
 
 void RunFunction(void) {
   Serial.println(millis());
-   Serial.println(VALUE_FORMAT(LCD_WIDTH));
 }
 
 void ReadInputs(void) {
